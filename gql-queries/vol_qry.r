@@ -1,9 +1,9 @@
 
 vol_qry <- function(id, from, to) {
-  query <- paste0('{
-    trafficData(trafficRegistrationPointId: "', id, '") {
+  glue('{
+    trafficData(trafficRegistrationPointId: "{id}") {
       volume {
-        byHour(from: "', from, '", to: "', to, '") {
+        byHour(from: "{from}", to: "{to}") {
           edges {
             node {
               from
@@ -19,8 +19,6 @@ vol_qry <- function(id, from, to) {
       }
     }
   }')
-  
-  return(query)
 }
 
 
