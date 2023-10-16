@@ -25,9 +25,8 @@ transform_metadata_to_df <- function(stations_metadata) {
 # What i did not expect with API data was the amount of list it actually is since ive never used that type of data
 
 
-transform_volumes <- function(json_data) {
-  volume_data <- json_data$data$trafficData$volume$byHour$edges
-  
+transform_volumes <- function(result) {
+  volume_data <- result$data$trafficData$volume$byHour$edges
   from_times <- map_chr(volume_data, ~ .x$node$from)
   to_times <- map_chr(volume_data, ~ .x$node$to)
   volumes <- map_dbl(volume_data, ~ .x$node$total$volumeNumbers$volume)
@@ -39,4 +38,5 @@ transform_volumes <- function(json_data) {
   
   return(df)
 }
+
 
