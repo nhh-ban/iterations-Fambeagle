@@ -4,7 +4,7 @@
 
 transform_metadata_to_df <- function(stations_metadata) {
   
-  # took some inspiration from the lecture notes
+  # Copied the data from the lecutre notes hihi
   df <- stations_metadata[[1]] %>% 
     map(as_tibble) %>% 
     bind_rows() %>% 
@@ -23,13 +23,16 @@ transform_metadata_to_df <- function(stations_metadata) {
 }
 
 # What i did not expect with API data was the amount of list it actually is since ive never used that type of data
+# also i was getting alot of trouble here cuz i dident get the qry data correctly implemented for a while
 
-
-transform_volumes <- function(result) {
-  volume_data <- result$data$trafficData$volume$byHour$edges
+transform_volumes <- function(api) {
+ # extracting the data from the list of the api
+  volume_data <- api$trafficData$volume$byHour$edges
   from_times <- map_chr(volume_data, ~ .x$node$from)
   to_times <- map_chr(volume_data, ~ .x$node$to)
   volumes <- map_dbl(volume_data, ~ .x$node$total$volumeNumbers$volume)
+  
+  # Just creating the dataframe
   df <- tibble(
     from = ymd_hms(from_times),
     to = ymd_hms(to_times),
@@ -38,5 +41,6 @@ transform_volumes <- function(result) {
   
   return(df)
 }
+
 
 
